@@ -23,6 +23,7 @@ module ts
 	input  wire[ 7:0] memQ,
 	output wire       memB,
 	output wire[ 7:0] memM,
+	output wire       memR,
 	output wire       memW,
 
 	output wire       mapped,
@@ -180,6 +181,7 @@ module ts
 	assign memD = q;
 	assign memB = dataFF[7];
 	assign memM = dataF4;
+	assign memR = !mreq && !rd;
 	assign memW = !mreq && !wr;
 
 //--- cpu -----------------------------------------------------------------------------------------

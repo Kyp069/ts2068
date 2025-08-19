@@ -100,6 +100,7 @@ module psd
 	wire[ 7:0] memQ;
 	wire       memB;
 	wire[ 7:0] memM;
+	wire[ 7:0] memR;
 	wire       memW;
 
 	wire       mapped;
@@ -263,6 +264,7 @@ module psd
 		.memQ   (memQ   ),
 		.memB   (memB   ),
 		.memM   (memM   ),
+		.memW   (memR   ),
 		.memW   (memW   ),
 		.mapped (mapped ),
 		.ramcs  (ramcs  ),
