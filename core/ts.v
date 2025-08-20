@@ -62,13 +62,13 @@ module ts
 	wire iorqFF = !iorq && a[7:0] == 8'hFF;
 
 	reg[7:0] dataF4;
-	always @(posedge clock) if(pe7M0) if(iorqF4 && !wr) dataF4 <= q;
+	always @(posedge clock, negedge reset) if(!reset) dataF4 <= 1'd0; else if(pe7M0) if(iorqF4 && !wr) dataF4 <= q;
 
 	reg[4:0] dataFE;
 	always @(posedge clock) if(pe7M0) if(iorqFE && !wr) dataFE <= q[4:0];
 
 	reg[7:0] dataFF;
-	always @(posedge clock) if(pe7M0) if(iorqFF && !wr) dataFF <= q;
+	always @(posedge clock, negedge reset) if(!reset) dataFF <= 1'd0; else if(pe7M0) if(iorqFF && !wr) dataFF <= q;
 
 //--- video ---------------------------------------------------------------------------------------
 
