@@ -100,7 +100,7 @@ module psd
 	wire[ 7:0] memQ;
 	wire       memB;
 	wire[ 7:0] memM;
-	wire[ 7:0] memR;
+	wire       memR;
 	wire       memW;
 
 	wire       mapped;
@@ -127,7 +127,7 @@ module psd
 	ram #(64) dock
 	(
 		clock,
-		dckE ? dioA[15:0] : memA,
+		dckE ? dioA[15:0] + (dioS[3:0] == 9 && dioA >= 9 ? 16'hFFF7 : 16'd0) : memA,
 		dckE ? dioD : memD,
 		dockQ,
 		dioW
@@ -139,10 +139,13 @@ module psd
 	wire[7:0] dramQ;
 	ram #(128) dram(clock, { page, memA[12:0] }, memD, dramQ, memW && memA[15:13] == 1 && mapped);
 
+	reg docked = 0;
+	always @(posedge clock) if(status[5]) docked <= 1'b0; else if(dckE) docked <= dioS != 0;
+
 	reg[7:0] dckS = 0;
 	always @(posedge clock) if(dckE) dckS <= dioA[15:13];
 
-	wire[7:0] memB0 = memA[15:13] <= dckS ? dockQ : 8'hFF;
+	wire[7:0] memB0 = memA[15:13] <= dckS && docked ? dockQ : 8'hFF;
 	wire[7:0] memB1 = memA[15:13] <= 0 ? extdQ : 8'hFF;
 
 	assign memQ 
@@ -240,7 +243,8 @@ module psd
 	wire model = status[3];
 	wire divmmc = status[4];
 
-	wire reset = power && F9 && !romE && !dckE && !status[1];
+	wire reset = power && F9 && !romE && !dckE && !status[1] && !status[5];
+	wire rfsh;
 	wire nmi = (F5 && !status[2]) || mapped;
 
 	wire ear = tzxBusy ? tzxTape : ~tape;
@@ -256,6 +260,7 @@ module psd
 		.ne3M5  (ne3M5  ),
 		.pe3M5  (pe3M5  ),
 		.reset  (reset  ),
+		.rfsh   (rfsh   ),
 		.nmi    (nmi    ),
 		.va     (va     ),
 		.vd     (vd     ),
@@ -264,7 +269,7 @@ module psd
 		.memQ   (memQ   ),
 		.memB   (memB   ),
 		.memM   (memM   ),
-		.memW   (memR   ),
+		.memR   (memR   ),
 		.memW   (memW   ),
 		.mapped (mapped ),
 		.ramcs  (ramcs  ),

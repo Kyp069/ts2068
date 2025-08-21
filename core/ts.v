@@ -13,6 +13,7 @@ module ts
 	input  wire       pe3M5,
 
 	input  wire       reset,
+	output wire       rfsh,
 	input  wire       nmi,
 
 	output wire[13:0] va,
@@ -191,7 +192,6 @@ module ts
 
 	wire iorq;
 	wire mreq;
-	wire rfsh;
 	wire irq;
 	wire m1;
 	wire rd;

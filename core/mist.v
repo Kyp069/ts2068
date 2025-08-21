@@ -58,6 +58,7 @@ localparam CONF_STR =
 	"-;",
 	"T1,Reset;",
 	"T2,NMI;",
+	"T5,Remove DCK;",
 	"V,V2.0,2025.08.10;",
 };
 
@@ -88,7 +89,7 @@ wire       sdBuffW;
 wire       imgMntd;
 wire[63:0] imgSize;
 
-user_io #(.STRLEN(145), .SD_IMAGES(1), .FEATURES(32'h2000)) user_io
+user_io #(.STRLEN(159), .SD_IMAGES(1), .FEATURES(32'h2000)) user_io
 (
 	.conf_str      (CONF_STR),
 	.conf_addr     (        ),
