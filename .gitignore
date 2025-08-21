@@ -2,6 +2,7 @@
 (files)/
 /core/·
 /np1
-/psd/db
-/psd/incremental_db
-/psd/output_files
+*/db
+*/incremental_db
+*/output_files
+*/*.qws

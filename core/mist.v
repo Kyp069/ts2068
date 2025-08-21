@@ -1,6 +1,10 @@
 //-------------------------------------------------------------------------------------------------
 module mist
 //-------------------------------------------------------------------------------------------------
+#
+(
+	parameter RGBW = 18
+)
 (
 	input  wire       clock,
 	input  wire       cep1x,
@@ -8,12 +12,12 @@ module mist
 
 	input  wire       hsync,
 	input  wire       vsync,
-	input  wire[ 5:0] r,
-	input  wire[ 5:0] g,
-	input  wire[ 5:0] b,
+	input  wire[RGBW/3-1:0] r,
+	input  wire[RGBW/3-1:0] g,
+	input  wire[RGBW/3-1:0] b,
 
 	output wire[ 1:0] sync,
-	output wire[17:0] rgb,
+	output wire[RGBW-1:0] rgb,
 
 	output wire[ 7:0] joy1,
 	output wire[ 7:0] joy2,
@@ -239,9 +243,9 @@ sd_card sd_card
 	.sd_sdo      (sdcMiso)
 );
 
-wire[5:0] ro, go, bo;
+wire[RGBW/3-1:0] ro, go, bo;
 
-osd #(.OSD_AUTO_CE(1'b1), .BIG_OSD(1'b1)) osd
+osd #(.OSD_AUTO_CE(1'b1), .OUT_COLOR_DEPTH(RGBW/3), .BIG_OSD(1'b1)) osd
 (
 	.clk_sys(clock  ),
 	.ce     (1'b0   ),
@@ -261,7 +265,7 @@ osd #(.OSD_AUTO_CE(1'b1), .BIG_OSD(1'b1)) osd
 	.B_out  (bo     )
 );
 
-scandoubler #(.HCW(10)) scandoubler
+scandoubler #(.HCW(10), .RGBW(RGBW)) scandoubler
 (
 	.clock   (clock  ),
 	.novga   (novga  ),
