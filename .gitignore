@@ -6,3 +6,4 @@
 */incremental_db
 */output_files
 */*.qws
+/cpl/greybox_tmp
