@@ -282,7 +282,7 @@ scandoubler #(.HCW(10), .RGBW(RGBW)) scandoubler
 assign joy1 = joystick_1[7:0];
 assign joy2 = joystick_2[7:0];
 
-assign romE = dioE && dioI == 1;
+assign romE = dioE && (dioI == 0 || dioI == 1);
 assign dckE = dioE && dioI == 2;
 assign tzxE = dioE && dioI == 3;
 
